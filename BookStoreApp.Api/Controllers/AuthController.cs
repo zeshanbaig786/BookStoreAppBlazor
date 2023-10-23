@@ -8,6 +8,7 @@ using BookStoreApp.Api.Static;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
@@ -36,6 +37,7 @@ namespace BookStoreApp.Api.Controllers
 		}
 
 		[HttpPost(template: "register")]
+		[ProducesResponseType(StatusCodes.Status202Accepted)]
 		public async Task<IActionResult> Register(UserDto userDto)
 		{
 			try
@@ -73,6 +75,7 @@ namespace BookStoreApp.Api.Controllers
 				return Problem(Messages.Error500Message);
 			}
 		}
+
 		[HttpPost(template: "login")]
 		public async Task<ActionResult<AuthResponse>> Login(LoginUserDto userDto)
 		{
@@ -94,7 +97,7 @@ namespace BookStoreApp.Api.Controllers
 					UserId = user.Id,
 					Token = tokenString,
 				};
-				return Accepted(response);
+				return Ok(response);
 			}
 			catch (Exception ex)
 			{
